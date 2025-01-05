@@ -44,7 +44,7 @@ npm install
 Create a `.env` file in the backend:
 ```
 OPENAI_API_KEY=your_openai_api_key
-CLAUDE_API_KEY=your_claude_api_key
+ANTROPHIC_API_KEY=your_claude_api_key
 ```
 
 ### Run the Application
@@ -65,8 +65,8 @@ Frontend: `http://localhost:3000` | Backend: `http://localhost:5000`
 ## How It Works
 1. **Upload Files**: Upload PDFs or text files via the frontend.
 2. **Extract Text**: Text is extracted using `pdf-parse`.
-3. **AI Summarization**: LangChain sends text to OpenAI or Claude for structured summaries.
-4. **Visualization**: Summaries are converted to schemas and visualized using Claude’s API.
+3. **AI Summarization**: LangChain sends text to OpenAI or Anthropic AI for structured summaries.
+4. **Visualization**: Summaries are converted to schemas and visualized using Anthropic’s API.
 5. **Output**: Users can enhance outputs with new prompts and are always welcome to try their own prompts to refine and customize the results. 
 
    This feature allows for experimentation, enabling users to explore creative ways of structuring and summarizing content. Finding the perfect output can be challenging because lecture notes vary in complexity, tone, and structure. Sharing your work and experimenting with different prompts fosters continuous improvement and showcases unique perspectives.
