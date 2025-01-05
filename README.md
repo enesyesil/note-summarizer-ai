@@ -7,7 +7,7 @@ The **Lecture Note Summarizer** helps students, especially those from neurodiver
 
 ## Features
 - Accepts PDF and plain text files.
-- Uses OpenAI and Claude APIs for summarization and visualization.
+- Uses OpenAI and Anthropic APIs for summarization and visualization.
 - Built with LangChain for flexibility to integrate various AI tools.
 - Outputs structured summaries and visual representations.
 
