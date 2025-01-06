@@ -1,101 +1,204 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState } from 'react';
+
+const LandingPage = () => {
+  const [selectedPurpose, setSelectedPurpose] = useState('quickReview');
+  const [selectedStructure, setSelectedStructure] = useState('bulletPoints');
+  const [selectedDepth, setSelectedDepth] = useState('moderateDetails');
+  const [selectedFormatting, setSelectedFormatting] = useState(['colorCoded']);
+  const [file, setFile] = useState<File | null>(null);
+  const [output, setOutput] = useState<string | null>(null);
+
+  const handleSend = async () => {
+    if (!file) return alert('Please upload a file.');
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('purpose', selectedPurpose);
+    formData.append('structure', selectedStructure);
+    formData.append('depth', selectedDepth);
+    formData.append('formatting', selectedFormatting.join(','));
+
+    try {
+      const response = await fetch('/api/submit', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Failed to process file');
+      const data = await response.json();
+
+      setOutput(data.output); // Store the output for display
+    } catch (error) {
+      console.error('Error sending data:', error);
+      alert('An error occurred while processing your request.');
+    }
+  };
+
+  const handleCopy = () => {
+    if (output) {
+      navigator.clipboard.writeText(output);
+      alert('Content copied to clipboard!');
+    }
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
+      <div className="bg-green-600 shadow-lg w-full max-w-2xl p-6 border-4 border-b-8 border-stone-800 rounded-xl">
+        <h1 className="text-2xl font-bold mb-4 text-center">Welcome to AI Summer</h1>
+        <p className="text-center mb-6">
+          Upload a file and select options to customize your intelligent summary.
+        </p>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        {/* Purpose of Summarization */}
+        <div className="mb-4">
+          <label className="block text-black font-bold mb-2">Purpose of Summarization:</label>
+          <select
+            value={selectedPurpose}
+            onChange={(e) => setSelectedPurpose(e.target.value)}
+            className="w-full p-2 border-black rounded-lg border-b-8 border-4"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <option value="quickReview">Quick Review</option>
+            <option value="detailedStudy">Detailed Study</option>
+            <option value="examPreparation">Exam Preparation</option>
+            <option value="understandingConcepts">Understanding Concepts</option>
+          </select>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        {/* Document Structure Preferences */}
+        <div className="mb-4">
+          <label className="block text-black font-bold mb-2">Document Structure:</label>
+          <select
+            value={selectedStructure}
+            onChange={(e) => setSelectedStructure(e.target.value)}
+            className="w-full p-2 border-black rounded-lg border-b-8 border-4"
+          >
+            <option value="bulletPoints">Bullet Points</option>
+            <option value="paragraphs">Paragraphs</option>
+            <option value="qaFormat">Question-Answer Format</option>
+            <option value="visualAids">Visual Aids</option>
+          </select>
+        </div>
+
+        {/* Depth of Summarization */}
+        <div className="mb-4">
+          <label className="block text-black font-bold mb-2">Depth of Summarization:</label>
+          <select
+            value={selectedDepth}
+            onChange={(e) => setSelectedDepth(e.target.value)}
+            className="w-full p-2 border-black rounded-lg border-b-8 border-4"
+          >
+            <option value="highLevelOverview">High-Level Overview</option>
+            <option value="moderateDetails">Moderate Details</option>
+            <option value="fullDetails">Full Details</option>
+          </select>
+        </div>
+
+        {/* Formatting Preferences */}
+        <div className="mb-4">
+          <label className="block text-black font-bold mb-2">Formatting Preferences:</label>
+          <div className="space-y-2">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                value="colorCoded"
+                checked={selectedFormatting.includes('colorCoded')}
+                onChange={(e) =>
+                  setSelectedFormatting((prev) =>
+                    e.target.checked
+                      ? [...prev, e.target.value]
+                      : prev.filter((item) => item !== e.target.value)
+                  )
+                }
+                className="mr-2"
+              />
+              Color-coded Highlights
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                value="sequentialOrder"
+                checked={selectedFormatting.includes('sequentialOrder')}
+                onChange={(e) =>
+                  setSelectedFormatting((prev) =>
+                    e.target.checked
+                      ? [...prev, e.target.value]
+                      : prev.filter((item) => item !== e.target.value)
+                  )
+                }
+                className="mr-2"
+              />
+              Sequential Order
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                value="categorizedTopics"
+                checked={selectedFormatting.includes('categorizedTopics')}
+                onChange={(e) =>
+                  setSelectedFormatting((prev) =>
+                    e.target.checked
+                      ? [...prev, e.target.value]
+                      : prev.filter((item) => item !== e.target.value)
+                  )
+                }
+                className="mr-2"
+              />
+              Categorized Topics
+            </label>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                value="headingsSubheadings"
+                checked={selectedFormatting.includes('headingsSubheadings')}
+                onChange={(e) =>
+                  setSelectedFormatting((prev) =>
+                    e.target.checked
+                      ? [...prev, e.target.value]
+                      : prev.filter((item) => item !== e.target.value)
+                  )
+                }
+                className="mr-2"
+              />
+              Headings and Subheadings
+            </label>
+          </div>
+        </div>
+
+        {/* File Upload */}
+        <div className="mb-4">
+          <label className="block text-black font-bold mb-2">Upload File:</label>
+          <input
+            type="file"
+            onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
+            className="w-full p-2 border-black rounded-lg border-b-8 border-4"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        </div>
+
+        <button
+          onClick={handleSend}
+          className="bg-black text-white py-2 px-4 font-bold rounded-lg border-b-8 border-2 border-stone-800 w-full"
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          Submit
+        </button>
+
+        {/* Display Output */}
+        {output && (
+          <div className="mt-6 bg-yellow-400 border-black border-4 rounded-lg p-4 overflow-y-auto h-64">
+            <h2 className="text-lg font-bold mb-2">Processed Output:</h2>
+            <pre className="whitespace-pre-wrap text-black">{output}</pre>
+            <button
+              onClick={handleCopy}
+              className="mt-4 bg-black text-white py-1 px-3 rounded-lg border-b-4 border-2 border-stone-800"
+            >
+              Copy to Clipboard
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
-}
+};
+
+export default LandingPage;
