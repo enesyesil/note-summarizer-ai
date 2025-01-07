@@ -2,7 +2,7 @@
 
 ## Overview
 The **Lecture Note Summarizer** helps students, especially those from neurodiverse backgrounds, by converting lecture notes into structured and accessible formats. It supports PDF and text uploads, uses AI for summarization, and offers visual outputs that can be enhanced with new prompts.
-
+Note: This application is currently under development.
 ---
 
 ## Features
