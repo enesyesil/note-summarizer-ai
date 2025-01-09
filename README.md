@@ -71,6 +71,66 @@ Frontend: `http://localhost:3000` | Backend: `http://localhost:5000`
 
    This feature allows for experimentation, enabling users to explore creative ways of structuring and summarizing content. Finding the perfect output can be challenging because lecture notes vary in complexity, tone, and structure. Sharing your work and experimenting with different prompts fosters continuous improvement and showcases unique perspectives.
 
+
+# Input Options for Lecture Note Summarizer
+
+This project collects inputs through selection-based options to create standardized outputs. Below are the key categories and their options:
+
+## 1. Purpose of Summarization
+- Quick Review
+- Detailed Study
+- Exam Preparation
+- Understanding Concepts
+
+## 2. Document Structure Preferences
+- Bullet Points
+- Paragraphs
+- Question-Answer Format
+- Visual Aids (e.g., tables, charts)
+
+## 3. Key Information to Extract
+- Definitions and Concepts
+- Examples and Applications
+- Main Arguments/Theories
+- Dates and Figures
+- References
+
+## 4. Depth of Summarization
+- High-Level Overview
+- Moderate Details
+- Full Details
+
+## 5. Formatting Preferences
+- Color-coded Highlights
+- Sequential Order
+- Categorized Topics
+- Headings and Subheadings
+
+## 6. Specific Lecture Focus
+- Conceptual Understanding
+- Technical Details
+- Historical Context
+- Practical Tips/Applications
+
+## 7. Intended Audience
+- High School Students
+- Undergraduate Students
+- Graduate Students/Researchers
+
+## 8. Type of Material to Summarize
+- Lecture Notes
+- Research Articles
+- Textbooks
+- Presentations
+
+## 9. Additional Features
+- Add Glossary
+- Include Visual Summaries
+- Link to Resources
+- Highlight Action Items
+
+These options ensure the summarizer is user-friendly, adaptable, and capable of producing high-quality, consistent outputs. Feel free to suggest additional categories or options.
+
 ---
 
 ## Future Enhancements
